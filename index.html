@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<title>Age Calculator</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+		<script src="age-calculator.js"></script>
+	</head>
+	<body ng-app="age-calculator" ng-controller="CalculatorController">
+		<h1>Age Calculator</h1>
+		<p>From: 
+			<select ng-model="startMonth" ng-options="month for month in months"></select>
+			/
+			<select ng-model="startDay" ng-options="day for day in startDays"></select>
+			/
+			<input type="number" max="9999" placeholder="yyyy" ng-model="startYear">
+		</p>
+		<p>To  : 
+			<select ng-model="endMonth" ng-options="month for month in months"></select>
+			/
+			<select ng-model="endDay" ng-options="day for day in endDays"></select>
+			/
+			<input type="number" max="9999" placeholder="yyyy" ng-model="endYear">
+		</p>
+		<p>Age: 
+			</br>
+			{{ageYear}} years
+			</br>
+			or {{ageTotalDays}} days
+		</p>
+	</body>
+</html>
