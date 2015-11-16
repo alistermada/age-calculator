@@ -6,23 +6,33 @@
 	</head>
 	<body ng-app="age-calculator" ng-controller="CalculatorController">
 		<h1>Age Calculator</h1>
-		<p>From: 
+		<h3>From:</h3>
+		<p> Date:
 			<select ng-model="startMonth" ng-options="month for month in months"></select>
 			/
 			<select ng-model="startDay" ng-options="day for day in startDays"></select>
 			/
 			<input type="number" max="9999" placeholder="yyyy" ng-model="startYear">
+			Time:
+			<select ng-model="startHour" ng-options="hour for hour in hours"></select>
+			:
+			<select ng-model="startMinute" ng-options="minute for minute in minutes"></select>
 		</p>
-		<p>To  : 
+		<h3>To:</h3>
+		<p>	Date:
 			<select ng-model="endMonth" ng-options="month for month in months"></select>
 			/
 			<select ng-model="endDay" ng-options="day for day in endDays"></select>
 			/
 			<input type="number" max="9999" placeholder="yyyy" ng-model="endYear">
+			Time:
+			<select ng-model="endHour" ng-options="hour for hour in hours"></select>
+			:
+			<select ng-model="endMinute" ng-options="minute for minute in minutes"></select>
 		</p>
 		<p>Age: 
 			</br>
-			{{ageYear}} years
+			{{ageYear}} years {{ageMonth}} months {{ageDay}} days {{ageHour}} hours {{ageMinute}} minutes 
 			</br>
 			or {{ageTotalDays}} days
 		</p>

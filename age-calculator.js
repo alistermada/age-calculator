@@ -4,12 +4,8 @@ angular
 		$scope.getDaysInMonth = function(month, year) {
 			var monthIndex = $scope.months.indexOf(month);
 			var daysInMonth = $scope.daysEachMonth[monthIndex];
-			var days = [];
+			var days = $scope.getListOfNumbers(1, daysInMonth);
 			var leapYear = false;
-
-			for (var i = 1; i <= daysInMonth; i++) {
-				days.push(i);
-			}
 
 			if (month === "Feb" && $scope.isLeapYear(year)) {
 				days.push(29);
@@ -37,21 +33,38 @@ angular
 			var startMonthIndex = $scope.months.indexOf($scope.startMonth);
 			var endMonthIndex = $scope.months.indexOf($scope.endMonth);
 			var milliPerYear = 31536000000;
-			var milliPerDay = 86400000
+			var milliPerDay = milliPerYear / 365;
 
 			var startTime = new Date($scope.startYear, startMonthIndex, $scope.startDay);
 			startTime.setFullYear($scope.startYear);
 			var endTime = new Date($scope.endYear, endMonthIndex, $scope.endDay);
+			endTime.setFullYear($scope.endYear);
 			//Age in milliseconds
 			var age = endTime - startTime;
 			
-			$scope.ageYear = Math.floor(age / milliPerYear);
-			$scope.ageTotalDays = age / milliPerDay;
-
-
-		}
-
-		// !!NOTE!! Refactor $watch functions to reduce redundancies
+			$scope.ageTotalDays = Math.floor(age / milliPerDay);
+			$scope.ageYear = $scope.endYear - $scope.startYear;
+			$scope.ageMonth = endMonthIndex - startMonthIndex;
+			if ($scope.ageMonth < 0) {
+				$scope.ageYear --;
+				$scope.ageMonth += 12;
+			}
+			$scope.ageDay = $scope.endDay - $scope.startDay;
+			if ($scope.ageDay < 0) {
+				$scope.ageMonth --;
+				$scope.ageDay += $scope.daysEachMonth[startMonthIndex];
+			}
+			$scope.ageHour = $scope.endHour - $scope.startHour;
+			if ($scope.ageHour < 0) {
+				$scope.ageDay --;
+				$scope.ageHour += 24;
+			}
+			$scope.ageMinute = $scope.endMinute - $scope.startMinute;
+			if ($scope.ageMinute < 0) {
+				$scope.ageHour --;
+				$scope.ageMinute += 60;
+			}
+		};
 
 		$scope.$watch('startMonth', function(month) {
 			$scope.startDays = $scope.getDaysInMonth(month, $scope.startYear);
@@ -77,12 +90,26 @@ angular
 			}
 		});
 
+		$scope.getListOfNumbers = function(min, max) {
+			var list = [];
+			for (var i = min; i <= max; i++) {
+				list.push(i);
+			}
+			return list;
+		};
 
-		(function init(){
+
+		(function init() {
 			var now = new Date;
 			$scope.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 			$scope.daysEachMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-			
+			$scope.hours = $scope.getListOfNumbers(0, 23);
+			$scope.minutes = $scope.getListOfNumbers(0, 59);
+			$scope.startHour = now.getHours();
+			$scope.startMinute  = now.getMinutes();
+			$scope.endHour = now.getHours();
+			$scope.endMinute = now.getMinutes();
+
 			$scope.startMonth = $scope.months[now.getMonth()];
 			$scope.endMonth = $scope.months[now.getMonth()];
 			$scope.startYear = now.getFullYear();
@@ -97,6 +124,6 @@ angular
 			$scope.startTime = now;
 			$scope.endTime = now;
 
-			$scope.calculateInterval = $interval($scope.calculate, 500);
+			$scope.calculateInterval = $interval($scope.calculate, 250);
 		})();
 	}]);
