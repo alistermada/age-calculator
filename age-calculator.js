@@ -22,7 +22,6 @@ angular
 			}
 		}
 
-		//Fix null days when selected day is higher than number of days in month
 		$scope.adjustNullDay = function(dayType, day, lastDay) {
 			if (day > lastDay) {
 				$scope[dayType] = lastDay;

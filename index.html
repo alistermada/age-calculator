@@ -1,40 +1,51 @@
 <html>
 	<head>
 		<title>Age Calculator</title>
+		<link href="css/age-calculator.css" type="text/css" rel="stylesheet"/>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 		<script src="age-calculator.js"></script>
 	</head>
 	<body ng-app="age-calculator" ng-controller="CalculatorController">
-		<h1>Age Calculator</h1>
-		<h3>From:</h3>
-		<p> Date:
-			<select ng-model="startMonth" ng-options="month for month in months"></select>
-			/
-			<select ng-model="startDay" ng-options="day for day in startDays"></select>
-			/
-			<input type="number" max="9999" placeholder="yyyy" ng-model="startYear">
-			Time:
-			<select ng-model="startHour" ng-options="hour for hour in hours"></select>
-			:
-			<select ng-model="startMinute" ng-options="minute for minute in minutes"></select>
-		</p>
-		<h3>To:</h3>
-		<p>	Date:
-			<select ng-model="endMonth" ng-options="month for month in months"></select>
-			/
-			<select ng-model="endDay" ng-options="day for day in endDays"></select>
-			/
-			<input type="number" max="9999" placeholder="yyyy" ng-model="endYear">
-			Time:
-			<select ng-model="endHour" ng-options="hour for hour in hours"></select>
-			:
-			<select ng-model="endMinute" ng-options="minute for minute in minutes"></select>
-		</p>
-		<p>Age: 
-			</br>
-			{{ageYear}} years {{ageMonth}} months {{ageDay}} days {{ageHour}} hours {{ageMinute}} minutes 
-			</br>
-			or {{ageTotalDays}} days
-		</p>
+		<div id="appContainer">
+			<h1>Age Calculator</h1>
+
+			<fieldset class="dateField">
+				<legend>Initial Date</legend>
+				<select class="month" ng-model="startMonth" ng-options="month for month in months"></select>
+				/
+				<select ng-model="startDay" ng-options="day for day in startDays"></select>
+				/
+				<input type="number" placeholder="year" ng-model="startYear">
+			</fieldset>
+			<fieldset class="timeField">
+				<legend>Initial Time</legend>
+				<select ng-model="startHour" ng-options="hour for hour in hours"></select>
+				:
+				<select ng-model="startMinute" ng-options="minute for minute in minutes"></select>
+			</fieldset>
+
+			<fieldset class="dateField">
+				<legend>Target Date</legend>
+				<select class="month" ng-model="endMonth" ng-options="month for month in months"></select>
+				/
+				<select ng-model="endDay" ng-options="day for day in endDays"></select>
+				/
+				<input type="number" placeholder="year" ng-model="endYear">
+			</fieldset>
+			<fieldset class="timeField">
+				<legend>Target Time</legend>
+				<select ng-model="endHour" ng-options="hour for hour in hours"></select>
+				:
+				<select ng-model="endMinute" ng-options="minute for minute in minutes"></select>
+			</fieldset>
+			<div id="results">
+				<h3>Age</h3>
+				<p> 
+					{{ageYear | number}} years {{ageMonth}} months {{ageDay}} days {{ageHour}} hours {{ageMinute}} minutes 
+					</br>
+					or {{ageTotalDays | number}} days
+				</p>
+			</div>
+		</div>
 	</body>
 </html>
