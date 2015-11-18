@@ -4,9 +4,10 @@
 		<link href="css/age-calculator.css" type="text/css" rel="stylesheet"/>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 		<script src="age-calculator.js"></script>
+		<script src="services/timeFilter.js"></script>
 	</head>
-	<body ng-app="age-calculator" ng-controller="CalculatorController">
-		<div id="appContainer">
+	<body ng-app="age-calculator">
+		<div id="appContainer" ng-controller="CalculatorController">
 			<h1>Age Calculator</h1>
 
 			<fieldset class="dateField">
@@ -19,9 +20,9 @@
 			</fieldset>
 			<fieldset class="timeField">
 				<legend>Initial Time</legend>
-				<select ng-model="startHour" ng-options="hour for hour in hours"></select>
+				<select ng-model="startHour" ng-options="(hour | time) for hour in hours"></select>
 				:
-				<select ng-model="startMinute" ng-options="minute for minute in minutes"></select>
+				<select ng-model="startMinute" ng-options="(minute | time) for minute in minutes"></select>
 			</fieldset>
 
 			<fieldset class="dateField">
@@ -34,16 +35,19 @@
 			</fieldset>
 			<fieldset class="timeField">
 				<legend>Target Time</legend>
-				<select ng-model="endHour" ng-options="hour for hour in hours"></select>
+				<select ng-model="endHour" ng-options="(hour | time) for hour in hours"></select>
 				:
-				<select ng-model="endMinute" ng-options="minute for minute in minutes"></select>
+				<select ng-model="endMinute" ng-options="(minute | time) for minute in minutes"></select>
 			</fieldset>
+
 			<div id="results">
 				<h3>Age</h3>
 				<p> 
 					{{ageYear | number}} years {{ageMonth}} months {{ageDay}} days {{ageHour}} hours {{ageMinute}} minutes 
 					</br>
 					or {{ageTotalDays | number}} days
+					</br>
+					or {{ageTotalHours | number}} hours
 				</p>
 			</div>
 		</div>
