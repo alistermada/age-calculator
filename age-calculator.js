@@ -28,67 +28,6 @@ angular
 			}
 		}
 
-		$scope.calculate = function() {
-			var startMonthIndex = $scope.months.indexOf($scope.startMonth);
-			var endMonthIndex = $scope.months.indexOf($scope.endMonth);
-			var milliPerYear = 31536000000;
-			var milliPerDay = milliPerYear / 365;
-
-			var startTime = new Date($scope.startYear, startMonthIndex, $scope.startDay);
-			startTime.setFullYear($scope.startYear);
-			var endTime = new Date($scope.endYear, endMonthIndex, $scope.endDay);
-			endTime.setFullYear($scope.endYear);
-			//Age in milliseconds
-			var age = endTime - startTime;
-			
-			$scope.ageTotalDays = Math.floor(age / milliPerDay);
-			$scope.ageYear = $scope.endYear - $scope.startYear;
-			$scope.ageMonth = endMonthIndex - startMonthIndex;
-			if ($scope.ageMonth < 0) {
-				$scope.ageYear --;
-				$scope.ageMonth += 12;
-			}
-			$scope.ageDay = $scope.endDay - $scope.startDay;
-			if ($scope.ageDay < 0) {
-				$scope.ageMonth --;
-				$scope.ageDay += $scope.daysEachMonth[startMonthIndex];
-			}
-			$scope.ageHour = $scope.endHour - $scope.startHour;
-			if ($scope.ageHour < 0) {
-				$scope.ageDay --;
-				$scope.ageHour += 24;
-			}
-			$scope.ageMinute = $scope.endMinute - $scope.startMinute;
-			if ($scope.ageMinute < 0) {
-				$scope.ageHour --;
-				$scope.ageMinute += 60;
-			}
-		};
-
-		$scope.$watch('startMonth', function(month) {
-			$scope.startDays = $scope.getDaysInMonth(month, $scope.startYear);
-			$scope.adjustNullDay('startDay', $scope.startDay, $scope.startDays.length);
-		});
-
-		$scope.$watch('endMonth', function(month) {
-			$scope.endDays = $scope.getDaysInMonth(month, $scope.endYear);
-			$scope.adjustNullDay('endDay', $scope.endDay, $scope.endDays.length);
-		});
-
-		$scope.$watch('startYear', function(year) {
-			if ($scope.startMonth === "Feb") {
-				$scope.startDays = $scope.getDaysInMonth("Feb", year);
-				$scope.adjustNullDay('startDay', $scope.startDay, $scope.startDays.length);
-			}
-		});
-
-		$scope.$watch('endYear', function(year) {
-			if ($scope.endMonth === "Feb") {
-				$scope.endDays = $scope.getDaysInMonth("Feb", year);
-				$scope.adjustNullDay('endDay', $scope.endDay, $scope.endDays.length);
-			}
-		});
-
 		$scope.getListOfNumbers = function(min, max) {
 			var list = [];
 			for (var i = min; i <= max; i++) {
@@ -97,6 +36,53 @@ angular
 			return list;
 		};
 
+    $scope.calculate = function() {
+    	var milliPerYear = 31536000000;
+      var milliPerDay = milliPerYear / 365;
+			var startMonthIndex = $scope.months.indexOf($scope.startMonth);
+      var endMonthIndex = $scope.months.indexOf($scope.endMonth);
+      var startTime = new Date(0, startMonthIndex, $scope.startDay, $scope.startHour, $scope.startMinute);
+      startTime.setFullYear($scope.startYear);
+      var endTime = new Date(0, endMonthIndex, $scope.endDay, $scope.endHour, $scope.endMinute);
+      endTime.setFullYear($scope.endYear);
+
+    	//Age in milliseconds
+      var age = endTime - startTime;
+      
+      $scope.ageTotalDays = Math.floor(age / milliPerDay);
+      $scope.ageTotalHours = Math.floor(age / milliPerDay * 24);
+      $scope.ageYear = $scope.endYear - $scope.startYear;
+      $scope.ageMonth = endMonthIndex - startMonthIndex;
+      if ($scope.ageMonth < 0) {
+        $scope.ageYear --;
+        $scope.ageMonth += 12;
+      }
+      $scope.ageDay = $scope.endDay - $scope.startDay;
+      if ($scope.ageDay < 0) {
+        $scope.ageMonth --;
+        $scope.ageDay += $scope.daysEachMonth[startMonthIndex];
+      }
+      $scope.ageHour = $scope.endHour - $scope.startHour;
+      if ($scope.ageHour < 0) {
+        $scope.ageDay --;
+        $scope.ageHour += 24;
+      }
+      $scope.ageMinute = $scope.endMinute - $scope.startMinute;
+      if ($scope.ageMinute < 0) {
+        $scope.ageHour --;
+        $scope.ageMinute += 60;
+      }
+    }
+
+		$scope.$watchGroup(['startMonth', 'startYear'], function() {
+			$scope.startDays = $scope.getDaysInMonth($scope.startMonth, $scope.startYear);
+			$scope.adjustNullDay('startDay', $scope.startDay, $scope.startDays.length);
+		});
+
+		$scope.$watchGroup(['endMonth', 'endYear'], function() {
+			$scope.endDays = $scope.getDaysInMonth($scope.endMonth, $scope.endYear);
+			$scope.adjustNullDay('endDay', $scope.endDay, $scope.endDays.length);
+		});
 
 		(function init() {
 			var now = new Date;
