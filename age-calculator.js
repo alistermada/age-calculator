@@ -1,6 +1,6 @@
 angular
 	.module('age-calculator', [])
-	.controller('CalculatorController', ['$scope', '$interval', function($scope, $interval) {
+	.controller('CalculatorController', ['$scope', '$interval', 'wikipedia', function($scope, $interval, wikipedia) {
 		$scope.getDaysInMonth = function(month, year) {
 			var monthIndex = $scope.months.indexOf(month);
 			var daysInMonth = $scope.daysEachMonth[monthIndex];
@@ -74,6 +74,31 @@ angular
       }
     }
 
+    $scope.queryWikipedia = function(){
+    	wikipedia.getBirthDate().then(function(data) {
+    		var birthDate, pageContent;
+    		var pageResult = data.query.pages;
+    		for (var page in pageResult) {
+    			if (pageResult.hasOwnProperty(page)) {
+        		pageContent = pageResult[page].revisions[0]['*'];
+    			}
+				}
+				var birthDateString = pageContent.match('birth_date  = {{(.*)}}');
+
+				if (birthDateString) {
+					//[year, month, date]
+					birthDate = birthDateString[1].match(/\d+/g);
+					$scope.startYear = parseInt(birthDate[0]);
+					$scope.startMonth = $scope.months[parseInt(birthDate[1]) - 1];
+					$scope.startDay = parseInt(birthDate[2]);
+					$scope.startHour = 0;
+					$scope.startMinute = 0;
+				} else {
+					console.log("Date of birth not found");
+				}
+   		});
+    }
+
 		$scope.$watchGroup(['startMonth', 'startYear'], function() {
 			$scope.startDays = $scope.getDaysInMonth($scope.startMonth, $scope.startYear);
 			$scope.adjustNullDay('startDay', $scope.startDay, $scope.startDays.length);
@@ -110,5 +135,7 @@ angular
 			$scope.endTime = now;
 
 			$scope.calculateInterval = $interval($scope.calculate, 250);
+
+			
 		})();
 	}]);

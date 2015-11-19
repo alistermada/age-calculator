@@ -2,13 +2,19 @@
 	<head>
 		<title>Age Calculator</title>
 		<link href="css/age-calculator.css" type="text/css" rel="stylesheet"/>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 		<script src="age-calculator.js"></script>
 		<script src="services/timeFilter.js"></script>
+		<script src="services/wikipedia.js"></script>
 	</head>
 	<body ng-app="age-calculator">
 		<div id="appContainer" ng-controller="CalculatorController">
 			<h1>Age Calculator</h1>
+
+			<div id="birthDateSearch">
+				<p>Placeholder: Albert Einstein</p>
+				<button ng-click="queryWikipedia()">Get Birth Date</button>
+			</div>
 
 			<fieldset class="dateField">
 				<legend>Initial Date</legend>
