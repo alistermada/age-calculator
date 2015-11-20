@@ -13,6 +13,10 @@ body {
   font-family: Arial, sans-serif;
 }
 
+#nameInput {
+  width: 200px;
+}
+
 h1 {
   color: #006080;
 }
@@ -26,8 +30,26 @@ legend {
   text-align: left;
 }
 
+select {
+  width: 40px;
+  background-color: #E5F0F0;
+}
+
+input {
+  padding: 0 3px;
+  background-color: #E5F0F0;
+}
+
+select.month {
+  width: 50px;
+}
+
 .dateField {
   width: 45%;
+}
+
+.dateField > input {
+  width: 70px;
 }
 
 .timeField {
@@ -43,17 +65,3 @@ legend {
   width: 80%;
 }
 
-select {
-  width: 40px;
-  background-color: #E5F0F0;
-}
-
-select.month {
-  width: 50px;
-}
-
-input {
-  padding: 0 3px;
-  width: 70px;
-  background-color: #E5F0F0;
-}

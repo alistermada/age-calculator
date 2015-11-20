@@ -12,12 +12,13 @@
 			<h1>Age Calculator</h1>
 
 			<div id="birthDateSearch">
-				<p>Placeholder: Albert Einstein</p>
+				<input id="nameInput" maxlength="50" placeholder="Name of a person" ng-model="nameToSearch">
 				<button ng-click="queryWikipedia()">Get Birth Date</button>
+				<p ng-show="queryResult" ng-bind="queryResult"></p>
 			</div>
 
 			<fieldset class="dateField">
-				<legend>Initial Date</legend>
+				<legend>Birth Date</legend>
 				<select class="month" ng-model="startMonth" ng-options="month for month in months"></select>
 				/
 				<select ng-model="startDay" ng-options="day for day in startDays"></select>
@@ -25,7 +26,7 @@
 				<input type="number" placeholder="year" ng-model="startYear">
 			</fieldset>
 			<fieldset class="timeField">
-				<legend>Initial Time</legend>
+				<legend>Birth Time</legend>
 				<select ng-model="startHour" ng-options="(hour | time) for hour in hours"></select>
 				:
 				<select ng-model="startMinute" ng-options="(minute | time) for minute in minutes"></select>
@@ -49,7 +50,9 @@
 			<div id="results">
 				<h3>Age</h3>
 				<p> 
-					{{ageYear | number}} years {{ageMonth}} months {{ageDay}} days {{ageHour}} hours {{ageMinute}} minutes 
+					{{ageYear | number}} years {{ageMonth}} months {{ageDay}} days {{ageHour}} hours {{ageMinute}} minutes
+					</br>
+					or {{ageYear * 12 + ageMonth}} months {{ageDay}} days
 					</br>
 					or {{ageTotalDays | number}} days
 					</br>

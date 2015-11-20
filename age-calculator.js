@@ -75,26 +75,28 @@ angular
     }
 
     $scope.queryWikipedia = function(){
-    	wikipedia.getBirthDate().then(function(data) {
+    	wikipedia.getBirthDate($scope.nameToSearch).then(function(data) {
     		var birthDate, pageContent;
     		var pageResult = data.query.pages;
     		for (var page in pageResult) {
     			if (pageResult.hasOwnProperty(page)) {
         		pageContent = pageResult[page].revisions[0]['*'];
+        		$scope.fullName = pageResult[page].title;
+        		$scope.queryResult = "Found: " + $scope.fullName;
     			}
 				}
-				var birthDateString = pageContent.match('birth_date  = {{(.*)}}');
 
-				if (birthDateString) {
-					//[year, month, date]
-					birthDate = birthDateString[1].match(/\d+/g);
-					$scope.startYear = parseInt(birthDate[0]);
-					$scope.startMonth = $scope.months[parseInt(birthDate[1]) - 1];
-					$scope.startDay = parseInt(birthDate[2]);
+				//[matched string, year, month, day]
+				var birthDate = pageContent.match(/birth_date\s+= {{\D*(\d+)\|(\d+)\|(\d+)/);
+
+				if (birthDate) {
+					$scope.startYear = parseInt(birthDate[1]);
+					$scope.startMonth = $scope.months[parseInt(birthDate[2]) - 1];
+					$scope.startDay = parseInt(birthDate[3]);
 					$scope.startHour = 0;
 					$scope.startMinute = 0;
 				} else {
-					console.log("Date of birth not found");
+					$scope.queryResult = "Date of birth for \"" + $scope.nameToSearch + "\" not found";
 				}
    		});
     }
